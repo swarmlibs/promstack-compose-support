@@ -1,0 +1,53 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/swarmlibs/dockerstack-schema/main/schema/dockerstack-spec.json
+
+services:
+  prometheus-agent:
+    image: ${PROMSTACK_PROMETHEUS_AGENT_VERSION}
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --enable-feature=agent
+      - --storage.agent.path=/prometheus
+      - --web.page-title=Promstack Prometheus - Docker Compose Support
+      - --web.console.libraries=/usr/share/prometheus/console_libraries
+      - --web.console.templates=/usr/share/prometheus/consoles
+      - --log.level=info
+    environment:
+      NODE_ID: '{{.Node.ID}}'
+      NODE_HOSTNAME: '{{.Node.Hostname}}'
+      PROMETHEUS_AGENT_SCRAPE_INTERVAL: ${PROMETHEUS_AGENT_SCRAPE_INTERVAL:-10s}
+      PROMETHEUS_AGENT_SCRAPE_TIMEOUT: ${PROMETHEUS_AGENT_SCRAPE_TIMEOUT:-5s}
+      PROMETHEUS_AGENT_EVALUATION_INTERVAL: ${PROMETHEUS_AGENT_EVALUATION_INTERVAL:-1m}
+    user: "0:0"
+    ports:
+      - published: 9091
+        target: 9090
+        mode: host
+    networks:
+      prometheus_gwnetwork:
+    hostname: '{{.Node.ID}}.promstack-compose-agent.internal'
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        read_only: true
+      - type: volume
+        source: prometheus-agent
+        target: /prometheus
+    configs:
+      - source: prometheus-agent.yaml
+        target: /etc/prometheus/prometheus.yml
+
+networks:
+  prometheus_gwnetwork:
+    name: prometheus_gwnetwork
+    external: true
+
+volumes:
+  prometheus-agent:
+
+configs:
+  # Prometheus config files
+  prometheus-agent.yaml:
+    name: prometheus-agent.yaml-v1
+    file: ./prometheus-agent/prometheus-agent.yaml
+    template_driver: golang

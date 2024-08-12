@@ -1,0 +1,28 @@
+# A scrape configuration for running Prometheus on a Docker Swarm cluster.
+# This uses separate scrape configs for cluster components (i.e. nodes, services, tasks).
+# 
+# Keep at most 50 sets of details of targets dropped by relabeling.
+# This information is used to display in the UI for troubleshooting.
+global:
+  scrape_interval: '{{ env "PROMETHEUS_AGENT_SCRAPE_INTERVAL" }}'
+  scrape_timeout: '{{ env "PROMETHEUS_AGENT_SCRAPE_TIMEOUT" }}'
+  evaluation_interval: '{{ env "PROMETHEUS_AGENT_EVALUATION_INTERVAL" }}'
+  # keep_dropped_targets: 50
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+    dockerswarm_node_id: '{{ env "NODE_ID" }}'
+    dockerswarm_node_hostname: '{{ env "NODE_HOSTNAME" }}'
+
+remote_write:
+  - url: http://prometheus.svc.cluster.local:9090/write
+
+# ====================================================
+# Scrape configuration
+# ====================================================
+
+# Load scrape configs from this directory.
+scrape_config_files:
+  - "/etc/prometheus/scrape-configs/*"
+  - "/prometheus-configs.d/scrape-configs/*"

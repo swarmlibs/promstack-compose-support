@@ -1,0 +1,2 @@
+# prometheus
+PROMSTACK_PROMETHEUS_AGENT_VERSION=docker.io/prom/prometheus:v2.53.1
