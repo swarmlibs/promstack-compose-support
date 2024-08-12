@@ -16,7 +16,7 @@ global:
     dockerswarm_node_hostname: '{{ env "NODE_HOSTNAME" }}'
 
 remote_write:
-  - url: http://prometheus.svc.cluster.local:9090/write
+  - url: http://prometheus.svc.cluster.local:9090/api/v1/write
 
 # ====================================================
 # Scrape configuration

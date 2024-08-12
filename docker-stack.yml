@@ -1,4 +1,22 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/swarmlibs/dockerstack-schema/main/schema/dockerstack-spec.json
+x-healthcheck: &x-healthcheck
+  interval: 30s
+  timeout: 10s
+  retries: 3
+  start_period: 30s
+
+x-deploy: &x-deploy
+  mode: global
+  placement:
+    max_replicas_per_node: 1
+    constraints:
+      - node.role == manager
+
+x-default-logging: &x-default-logging
+  options:
+    max-size: "12m"
+    max-file: "5"
+  driver: json-file
 
 services:
   prometheus-agent:
@@ -25,6 +43,11 @@ services:
     networks:
       prometheus_gwnetwork:
     hostname: '{{.Node.ID}}.promstack-compose-agent.internal'
+    configs:
+      - source: prometheus-agent.yaml
+        target: /etc/prometheus/prometheus.yml
+      - source: prometheus-agent-scrape-config
+        target: /etc/prometheus/scrape-configs/prometheus.yaml
     volumes:
       - type: bind
         source: /var/run/docker.sock
@@ -33,9 +56,33 @@ services:
       - type: volume
         source: prometheus-agent
         target: /prometheus
-    configs:
-      - source: prometheus-agent.yaml
-        target: /etc/prometheus/prometheus.yml
+    healthcheck:
+      <<: *x-healthcheck
+      test: wget -qO - --tries=1 --spider http://127.0.0.1:9090/-/healthy || exit 1
+    logging: *x-default-logging
+    deploy:
+      <<: *x-deploy
+      labels:
+        io.prometheus.role: "prometheus"
+        io.prometheus.dockerswarm-tasks.should_be_scraped: "false"
+        io.prometheus.dockerswarm-services.should_be_probed: "false"
+      restart_policy:
+        condition: any
+        max_attempts: 15
+        delay: 30s
+        window: 15s
+      rollback_config:
+        parallelism: 1
+        delay: 30s
+        failure_action: rollback
+        monitor: 15s
+        max_failure_ratio: 0.1
+      update_config:
+        parallelism: 1
+        delay: 30s
+        failure_action: rollback
+        monitor: 15s
+        max_failure_ratio: 0.1
 
 networks:
   prometheus_gwnetwork:
@@ -46,8 +93,11 @@ volumes:
   prometheus-agent:
 
 configs:
-  # Prometheus config files
   prometheus-agent.yaml:
     name: prometheus-agent.yaml-v1
     file: ./prometheus-agent/prometheus-agent.yaml
+    template_driver: golang
+  prometheus-agent-scrape-config:
+    name: prometheus-agent-scrape-config-v1
+    file: ./prometheus-agent/scrape-configs/prometheus-agent.yaml
     template_driver: golang
