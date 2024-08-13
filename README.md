@@ -2,9 +2,9 @@
 A Docker Compose support stack for Promstack
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/891a715c-0bf8-4ffa-bb65-66cd619fd27a">
-  <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/82fb29bc-71f8-4a12-a239-733763b11ce1">
-  <img src="https://github.com/user-attachments/assets/82fb29bc-71f8-4a12-a239-733763b11ce1">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/c9d17547-df5a-47be-9c2c-e4fa280716f5">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/d7089364-3757-4bb9-8804-0e4b6016a30b">
+  <img src="https://github.com/user-attachments/assets/d7089364-3757-4bb9-8804-0e4b6016a30b">
 </picture>
 
 ## Concepts
@@ -16,9 +16,9 @@ This section covers some concepts that are important to understand for day to da
 By design, the Prometheus server is configured to automatically discover and scrape the metrics from the Docker Swarm nodes, services and tasks. You can use Docker object labels in the deploy block to automagically register services as targets for Prometheus. It also configured with config provider and config reloader services.
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/f1dd0df8-f6c8-4a9b-8398-5bb445cb197f">
-  <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/e57e363c-371a-46a8-9a10-96632639f17f">
-  <img src="https://github.com/user-attachments/assets/e57e363c-371a-46a8-9a10-96632639f17f">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/a75d6d2e-1a34-4a46-b115-b2b5886465eb">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/11ac1025-ec99-4f9c-b219-7e30294251c3">
+  <img src="https://github.com/user-attachments/assets/11ac1025-ec99-4f9c-b219-7e30294251c3">
 </picture>
 
 **Prometheus Kubernetes compatible labels**
