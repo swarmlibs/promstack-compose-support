@@ -41,6 +41,7 @@ services:
         target: 9090
         mode: host
     networks:
+      prometheus:
       prometheus_gwnetwork:
     hostname: '{{.Node.ID}}.promstack-compose-agent.internal'
     configs:
@@ -87,6 +88,9 @@ services:
         max_failure_ratio: 0.1
 
 networks:
+  prometheus:
+    name: prometheus
+    external: true
   prometheus_gwnetwork:
     name: prometheus_gwnetwork
     external: true
