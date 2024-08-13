@@ -39,12 +39,12 @@ Here is a list of Docker Service/Task labels that are mapped to Kubernetes label
 
 The support for Docker Containers and Docker Compose projects made possible by running additional Prometheus services in Agent mode. The metrics collected by the Prometheus Agent are then pushed to the Prometheus server for visualization and monitoring. (For more information about Prometheus Agent, see https://prometheus.io/blog/2021/11/16/agent/).
 
-| Kubernetes   | Docker                                                                                   | Scrape config |
-| ------------ | ---------------------------------------------------------------------------------------- | ------------- |
-| `namespace`  | `__meta_docker_container_label_com_docker_compose_project`                               |               |
-| `deployment` | `__meta_docker_container_label_com_docker_compose_project`                               |               |
-| `pod`        | `{{service_name}}.{{__meta_docker_container_label_com_docker_compose_container_number}}` |               |
-| `task`       | `{{service_name}}.{{__meta_docker_container_label_com_docker_compose_container_number}}` |               |
+| Kubernetes   | Docker                                                                                   |
+| ------------ | ---------------------------------------------------------------------------------------- |
+| `namespace`  | `__meta_docker_container_label_com_docker_compose_project`                               |
+| `deployment` | `__meta_docker_container_label_com_docker_compose_project`                               |
+| `pod`        | `{{service_name}}.{{__meta_docker_container_label_com_docker_compose_container_number}}` |
+| `task`       | `{{service_name}}.{{__meta_docker_container_label_com_docker_compose_container_number}}` |
 
 * The **service_name** is a combination of the compose project and service name.
 
