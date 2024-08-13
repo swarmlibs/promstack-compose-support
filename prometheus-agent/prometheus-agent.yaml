@@ -15,7 +15,9 @@ global:
     docker_node_id: '{{ env "NODE_ID" }}'
     docker_node_hostname: '{{ env "NODE_HOSTNAME" }}'
 
+# Remote write configuration
 remote_write:
+  # Push metrics to the Promstack Prometheus server.
   - url: http://prometheus.svc.cluster.local:9090/api/v1/write
 
 # ====================================================
