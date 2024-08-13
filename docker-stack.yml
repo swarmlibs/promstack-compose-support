@@ -48,6 +48,8 @@ services:
         target: /etc/prometheus/prometheus.yml
       - source: prometheus-agent-scrape-config
         target: /etc/prometheus/scrape-configs/prometheus.yaml
+      - source: prometheus-agent-docker-compose
+        target: /etc/prometheus/scrape-configs/docker-compose.yaml
     volumes:
       - type: bind
         source: /var/run/docker.sock
@@ -101,3 +103,6 @@ configs:
     name: prometheus-agent-scrape-config-v1
     file: ./prometheus-agent/scrape-configs/prometheus-agent.yaml
     template_driver: golang
+  prometheus-agent-docker-compose:
+    name: prometheus-agent-docker-compose-v1
+    file: ./prometheus-agent/scrape-configs/docker-compose.yml
