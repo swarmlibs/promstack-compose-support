@@ -1,0 +1,13 @@
+services:
+  grafana:
+    image: grafana/grafana
+    labels:
+      io.prometheus.enabled: "true"
+      io.prometheus.scrape_port: "3000"
+    networks:
+      prometheus:
+
+networks:
+  prometheus:
+    name: prometheus
+    external: true
