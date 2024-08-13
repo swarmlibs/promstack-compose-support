@@ -115,7 +115,7 @@ You can use Docker object labels in the `label` block to automagically register 
 #### Register services as Prometheus targets
 
 - `io.prometheus.enabled`: Enable the Prometheus scraping for the service.
-- `io.prometheus.job_name`: The Prometheus job name. Default is `<docker_stack_namespace>/<service_name|job_name>`.
+- `io.prometheus.job_name`: The Prometheus job name. Default is `<docker_compose_project>/<docker_compose_service>`.
 - `io.prometheus.scrape_scheme`: The scheme to scrape the metrics. Default is `http`.
 - `io.prometheus.scrape_port`: The port to scrape the metrics. Default is `80`.
 - `io.prometheus.metrics_path`: The path to scrape the metrics. Default is `/metrics`.
@@ -130,7 +130,6 @@ services:
     # ...
     labels:
       io.prometheus.enabled: "true"
-      io.prometheus.job_name: "my-app"
       io.prometheus.scrape_port: "8080"
     networks:
       prometheus:
