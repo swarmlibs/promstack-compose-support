@@ -12,8 +12,8 @@ global:
   # Attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
   external_labels:
-    dockerswarm_node_id: '{{ env "NODE_ID" }}'
-    dockerswarm_node_hostname: '{{ env "NODE_HOSTNAME" }}'
+    docker_node_id: '{{ env "NODE_ID" }}'
+    docker_node_hostname: '{{ env "NODE_HOSTNAME" }}'
 
 remote_write:
   - url: http://prometheus.svc.cluster.local:9090/api/v1/write
