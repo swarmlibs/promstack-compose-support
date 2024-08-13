@@ -124,17 +124,22 @@ scrape_configs:
       - source_labels: [__meta_docker_container_label_com_docker_compose_project]
         action: replace
         target_label: deployment
-      # Reuse the "com.docker.compose.project" & "com.docker.compose.service" label for the "pod" name.
+
+      # Create a temporary service name, mimicking the Docker Swarm's service name
       - source_labels:
           - __meta_docker_container_label_com_docker_compose_project
           - __meta_docker_container_label_com_docker_compose_service
+        separator: '_'
+        target_label: __tmp_service_name
+      # Reuse the "com.docker.compose.project" & "com.docker.compose.service" label for the "pod" name.
+      - source_labels:
+          - __tmp_service_name
           - __meta_docker_container_label_com_docker_compose_container_number
         separator: '.'
         target_label: pod
       # Generate "container" label from the "com.docker.compose.project", "com.docker.compose.service" and "com.docker.compose.container-number".
       - source_labels: 
-          - __meta_docker_container_label_com_docker_compose_project
-          - __meta_docker_container_label_com_docker_compose_service
+          - __tmp_service_name
           - __meta_docker_container_label_com_docker_compose_container_number
         separator: '.'
         target_label: task
