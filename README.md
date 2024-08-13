@@ -1,5 +1,5 @@
 # About
-A Docker Compose support stack for Promstack
+A Docker Compose support stack for Promstack, via using Prometheus Agent mode.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/c9d17547-df5a-47be-9c2c-e4fa280716f5">
