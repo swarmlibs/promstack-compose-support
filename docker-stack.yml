@@ -8,7 +8,6 @@ x-healthcheck: &x-healthcheck
 x-deploy: &x-deploy
   mode: global
   placement:
-    max_replicas_per_node: 1
     constraints:
       - node.role == manager
 
@@ -44,12 +43,14 @@ services:
       prometheus:
       prometheus_gwnetwork:
     hostname: '{{.Node.ID}}.promstack-compose-agent.internal'
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     configs:
-      - source: prometheus-agent.yaml
+      - source: promstack-compose-support-agent-config
         target: /etc/prometheus/prometheus.yml
-      - source: prometheus-agent-scrape-config
+      - source: promstack-compose-support-agent-scrape-config
         target: /etc/prometheus/scrape-configs/prometheus.yaml
-      - source: prometheus-agent-docker-compose
+      - source: promstack-compose-support-agent-docker-compose
         target: /etc/prometheus/scrape-configs/docker-compose.yaml
     volumes:
       - type: bind
@@ -99,14 +100,17 @@ volumes:
   prometheus-agent:
 
 configs:
-  prometheus-agent.yaml:
-    name: prometheus-agent.yaml-v1
+  # Prometheus config files
+  promstack-compose-support-agent-config:
+    name: promstack-compose-support-agent-config-v1
     file: ./prometheus-agent/prometheus-agent.yaml
     template_driver: golang
-  prometheus-agent-scrape-config:
-    name: prometheus-agent-scrape-config-v1
+
+  # Prometheus agent's scrape config files
+  promstack-compose-support-agent-scrape-config:
+    name: promstack-compose-support-agent-scrape-config-v1
     file: ./prometheus-agent/scrape-configs/prometheus-agent.yaml
     template_driver: golang
-  prometheus-agent-docker-compose:
-    name: prometheus-agent-docker-compose-v1
+  promstack-compose-support-agent-docker-compose:
+    name: promstack-compose-support-agent-docker-compose-v1
     file: ./prometheus-agent/scrape-configs/docker-compose.yml
