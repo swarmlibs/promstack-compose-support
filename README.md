@@ -43,7 +43,7 @@ Here is a list of Docker Service/Task labels that are mapped to Kubernetes label
 
 - Docker running Swarm mode
 - A Docker Swarm cluster with at least 3 nodes
-- [Promstack](https://github.com/swarmlibs/promstack)
+- The [Promstack](https://github.com/swarmlibs/promstack) is required
 
 ## Getting Started
 To get started, clone this repository to your local machine:
