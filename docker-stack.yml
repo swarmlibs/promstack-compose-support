@@ -58,7 +58,7 @@ services:
         target: /var/run/docker.sock
         read_only: true
       - type: volume
-        source: prometheus-agent
+        source: agent
         target: /prometheus
     healthcheck:
       <<: *x-healthcheck
@@ -97,7 +97,7 @@ networks:
     external: true
 
 volumes:
-  prometheus-agent:
+  agent:
 
 configs:
   # Prometheus config files
