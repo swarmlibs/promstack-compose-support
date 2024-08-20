@@ -8,6 +8,9 @@ scrape_configs:
     docker_sd_configs:
       - host: unix:///var/run/docker.sock
         refresh_interval: 10s
+        filters:
+          - name: network
+            values: [ prometheus ]
 
     relabel_configs:
       # ================================================================================
@@ -51,10 +54,10 @@ scrape_configs:
       # io.prometheus.scrape_port=<port>
       - source_labels:
         - __meta_docker_container_label_io_prometheus_scrape_port
-        - __address__
+        - __meta_docker_port_private
         target_label: __meta_docker_container_label_io_prometheus_scrape_port
         separator: ';'
-        regex: (\d+);(?:[^:]+)(?::(\d+))?
+        regex: ;(.*)
         replacement: $1
 
       # io.prometheus.metrics_path=<path>
@@ -75,6 +78,17 @@ scrape_configs:
         replacement: __param_$1
       - regex: __meta_docker_container_label_io_prometheus_label_(.+)
         action: labelmap
+
+      # Override "__address__" and "instance" labels
+      - source_labels:
+          - __address__
+          - __meta_docker_container_label_io_prometheus_scrape_port
+        target_label: __address__
+        regex: (.*):.*;(\d+)
+        replacement: $1:$2
+      - source_labels:
+          - __address__
+        target_label: instance
 
       # If service is replicated, set "job_id" label to "<job>/<service_name>/<task_slot>"
       - source_labels:
