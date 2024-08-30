@@ -142,4 +142,6 @@ networks:
     external: true
 ```
 
-> WIP
+# License
+
+Licensed under the MIT License. See [LICENSE](LICENSE) for more information.
