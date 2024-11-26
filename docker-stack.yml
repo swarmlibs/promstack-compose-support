@@ -7,9 +7,6 @@ x-healthcheck: &x-healthcheck
 
 x-deploy: &x-deploy
   mode: global
-  placement:
-    constraints:
-      - node.role == manager
 
 x-default-logging: &x-default-logging
   options:
@@ -29,8 +26,8 @@ services:
       - --web.console.templates=/usr/share/prometheus/consoles
       - --log.level=info
     environment:
-      NODE_ID: '{{.Node.ID}}'
-      NODE_HOSTNAME: '{{.Node.Hostname}}'
+      DOCKERSWARM_NODE_ID: '{{.Node.ID}}'
+      DOCKERSWARM_NODE_HOSTNAME: '{{.Node.Hostname}}'
       PROMETHEUS_AGENT_SCRAPE_INTERVAL: ${PROMETHEUS_AGENT_SCRAPE_INTERVAL:-10s}
       PROMETHEUS_AGENT_SCRAPE_TIMEOUT: ${PROMETHEUS_AGENT_SCRAPE_TIMEOUT:-5s}
       PROMETHEUS_AGENT_EVALUATION_INTERVAL: ${PROMETHEUS_AGENT_EVALUATION_INTERVAL:-1m}

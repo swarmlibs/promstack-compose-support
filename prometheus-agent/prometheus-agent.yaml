@@ -12,8 +12,8 @@ global:
   # Attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
   external_labels:
-    docker_node_id: '{{ env "NODE_ID" }}'
-    docker_node_hostname: '{{ env "NODE_HOSTNAME" }}'
+    dockerswarm_node_id: '{{ env "DOCKERSWARM_NODE_ID" }}'
+    dockerswarm_node_hostname: '{{ env "DOCKERSWARM_NODE_HOSTNAME" }}'
 
 # Remote write configuration
 remote_write:
